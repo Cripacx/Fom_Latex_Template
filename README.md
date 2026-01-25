@@ -1,4 +1,4 @@
-# Expose
+# Bachelor FOM Template
 
 Dieses Projekt verwendet einen **VS Code Dev Container**, um eine konsistente Entwicklungsumgebung bereitzustellen.
 
