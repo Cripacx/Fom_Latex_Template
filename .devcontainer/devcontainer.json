@@ -4,7 +4,7 @@
     "service": "latex",
     "workspaceFolder": "/workspace", 
 
-    "postCreateCommand": "tlmgr update --self && tlmgr install latexmk",
+    "postCreateCommand": "tlmgr update --self && tlmgr install latexmk && apt update && apt install graphviz -y",
 
     "customizations": {
             "vscode": {
@@ -46,14 +46,18 @@
                         "LaTeX",
                         "Bibliographie",
                         "Dokumentklasse"
-                    ]
+                    ],
+                    "plantuml.exportFormat": "png",
+                    "plantuml.exportOutDir": "/abbildungen/../",
+                    "plantuml.exportSubFolder": false
                 },
                 "extensions": [
                     "James-Yu.latex-workshop",
                     "streetsidesoftware.code-spell-checker",
                     "streetsidesoftware.code-spell-checker-german",
                     "hediet.vscode-drawio",
-                    "george-alisson.html-preview-vscode"
+                    "george-alisson.html-preview-vscode",
+                    "jebbs.plantuml"
                 ]
             }
         },
