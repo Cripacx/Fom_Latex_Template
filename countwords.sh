@@ -5,7 +5,7 @@ echo "Unter macOS kann es mit dem folgenden Befehl installiert werden: brew inst
 
 rm wordcounts.txt 2> /dev/null
 
-detex thesis_main.tex > thesis_main.txt
+detex main.tex > main.txt
 
 # Removes everything before Einleitung and after Anhang
 BEGINNING="Einleitung"
@@ -20,10 +20,10 @@ while read -r p; do
   fi
   # start txt when beginning was found
   echo "$p" | grep $BEGINNING >/dev/null && FOUNDBEGIN="y"
-done <thesis_main.txt
+done <main.txt
 
 echo
 echo "Anzahl der Wörter vom Kapitel Einleitung bis Anhang:"
 wc -w wordcounts.txt # zeilen, wörter, zeichen
 rm wordcounts.txt 2> /dev/null
-rm thesis_main.txt 2> /dev/null
+rm main.txt 2> /dev/null

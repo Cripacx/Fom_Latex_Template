@@ -1,6 +1,12 @@
 %-----------------------------------
 % Meta Informationen zur Arbeit
 %-----------------------------------
+% Diese Vorlage eignet sich fuer verschiedene Arten wissenschaftlicher Arbeiten
+% (Bachelor-/Master-Thesis, Hausarbeit, Seminararbeit, Projektarbeit, Exposé ...).
+% Die meisten Anpassungen erfolgen hier in dieser Datei.
+
+% ifthen wird fuer die Fallunterscheidung auf der Titelseite benoetigt.
+\usepackage{ifthen}
 
 % Autor
 \newcommand{\myAutor}{Max Mustermann}
@@ -11,11 +17,36 @@
 % Titel der Arbeit
 \newcommand{\myTitel}{LATEX-Vorlage - mit Biblatex}
 
-% Betreuer
+%-----------------------------------
+% Art der Arbeit (Modus-Schalter)
+%-----------------------------------
+% \myArbeitsModus steuert automatisch das Layout der Titelseite:
+%   thesis            -> Abschlussarbeit: zeigt den angestrebten akademischen
+%                        Grad sowie Erst-/Zweitgutachter
+%                        (z. B. Bachelor-/Master-Thesis).
+%   lehrveranstaltung -> Arbeit im Rahmen einer Lehrveranstaltung: zeigt die
+%                        Lehrveranstaltung sowie den Betreuer
+%                        (z. B. Hausarbeit, Seminararbeit, Projektarbeit, Exposé).
+\newcommand{\myArbeitsModus}{thesis}
+
+% Bezeichnung der Arbeit, wie sie auf der Titelseite erscheint.
+% Beispiele: Bachelor Thesis, Master Thesis, Hausarbeit, Seminararbeit,
+%            Projektarbeit, Exposé zur Bachelorarbeit
+\newcommand{\myThesisArt}{Bachelor Thesis}
+
+% Betreuer bzw. Erstgutachter
+% (die Beschriftung auf der Titelseite richtet sich nach \myArbeitsModus)
 \newcommand{\myBetreuer}{Prof. Dr. Peter Lustig}
 
-% Lehrveranstaltung
+% Zweitgutachter (nur im Modus 'thesis' relevant).
+% Leer lassen ({}), wenn kein Zweitgutachter auf der Titelseite erscheinen soll.
+\newcommand{\myZweitgutachter}{}
+
+% Lehrveranstaltung (nur im Modus 'lehrveranstaltung' relevant)
 \newcommand{\myLehrveranstaltung}{Modul Nr. 1}
+
+% Zu erlangender akademischer Grad (nur im Modus 'thesis' relevant)
+\newcommand{\myAkademischerGrad}{Bachelor of Science (B.Sc.)}
 
 % Matrikelnummer
 \newcommand{\myMatrikelNr}{123456}
@@ -37,12 +68,6 @@
 
 % Studiengang
 \newcommand{\myStudiengang}{Wirtschaftsinformatik}
-
-% Art der Arbeit
-\newcommand{\myThesisArt}{Bachelor Thesis}
-
-% Zu erlangender akademische Grad
-\newcommand{\myAkademischerGrad}{Bachelor of Science (B.Sc.)}
 
 % Firma
 \newcommand{\myFirma}{Mustermann GmbH}

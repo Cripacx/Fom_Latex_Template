@@ -13,16 +13,16 @@ cleanup() {
 }
 
 # Remove existing PDF and temporary files at the beginning
-rm -f "$CURRENT_DIR/thesis_main.pdf"
+rm -f "$CURRENT_DIR/main.pdf"
 cleanup
 
 echo "Compiling in Language: $1"
 if [ "$1" = "en" ] || [ "$2" = "en" ] ; then
-  compile="$CMD_LATEX --shell-escape --jobname=\"thesis_englisch\" \"\def\FOMEN{}\input{$CURRENT_DIR/thesis_main.tex}\""
-  biberarg="$CURRENT_DIR/thesis_englisch"
+  compile="$CMD_LATEX --shell-escape --jobname=\"main_englisch\" \"\def\FOMEN{}\input{$CURRENT_DIR/main.tex}\""
+  biberarg="$CURRENT_DIR/main_englisch"
 else
-  compile="$CMD_LATEX --shell-escape \"$CURRENT_DIR/thesis_main.tex\""
-  biberarg="$CURRENT_DIR/thesis_main"
+  compile="$CMD_LATEX --shell-escape \"$CURRENT_DIR/main.tex\""
+  biberarg="$CURRENT_DIR/main"
 fi
 
 eval "$compile"

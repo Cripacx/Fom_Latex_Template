@@ -46,7 +46,7 @@ Dieses Package basiert auf python-pygments und unterstützt weit mehr Sprachkons
 Um das Paket zu verwenden muss es eingebunden werden und zusätzlich python-pygments installiert sein.
 (Dies ist mit im Dockerfile vorhanden. Für die anderen Compile-Methoden, wie das native verwenden von Tex Live findet sich hier die Installationsanleitung für das minted Paket: https://ctan.org/pkg/minted?lang=de)
 
-Damit das kompilieren ohne Python trotzdem möglich ist, ist die Funktion standardmäßig ausgebaut. Deshalb muss zusätzlich in der Datei \begin{verbatim}thesis_main.tex \usepackage{minted} \end{verbatim} wieder einkommentiert werden. 
+Damit das kompilieren ohne Python trotzdem möglich ist, ist die Funktion standardmäßig ausgebaut. Deshalb muss zusätzlich in der Datei \begin{verbatim}main.tex \usepackage{minted} \end{verbatim} wieder einkommentiert werden.
 
 Minted lässt sich dann ganz ähnlich zu lstlisting verwenden:
 \begin{lstlisting}
@@ -199,11 +199,11 @@ Der zweite Punkt in dieser Ebene ist zur Erinnerung daran, dass es nie nie niema
 \subsection{Skript zum Kompilieren}
 Latex will ja bekanntlich in einer bestimmten Reihenfolge aufgerufen werden:
 \begin{lstlisting}
-lualatex thesis_main.tex
-biber thesis_main
-lualatex thesis_main.tex
-lualatex thesis_main.tex
-thesis_main.pdf
+lualatex main.tex
+biber main
+lualatex main.tex
+lualatex main.tex
+main.pdf
 \end{lstlisting}
 
 Dies ist der Inhalt der Batchdatei \enquote{compile.bat}.

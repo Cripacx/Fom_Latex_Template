@@ -97,6 +97,17 @@
 \usepackage{tabularx}% für Breitenangabe
 
 %-----------------------------------
+% Diagramme (TikZ / PGF)
+%-----------------------------------
+% TikZ/PGF: Schematische Vektorgrafiken (Flussdiagramme, Architektur-/UML-/
+% Sequenzdiagramme, Gantt-Zeitplan). Vektoriell, skalierbar und typografisch
+% konsistent zum Dokument - bevorzugt gegenüber importierten Bitmaps.
+% Konvention siehe CLAUDE.md ("Diagrams — prefer TikZ").
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,fit,calc}
+\usepackage{pgfgantt}% Gantt-Diagramme (z. B. Zeitplan im Exposé)
+
+%-----------------------------------
 % sauber formatierter Quelltext
 %-----------------------------------
 \usepackage{listings}
@@ -205,7 +216,7 @@
             \input{skripte/modsBiblatex}
         }{
             % Fehlerbehandlung für ungültige Werte
-            \PackageError{thesis_main}{Ungueltiger Wert fuer \noexpand\citationstyle: \citationstyle}{Bitte setzen Sie \noexpand\citationstyle auf ieee, fom_2018 oder fom_alt.}
+            \PackageError{main}{Ungueltiger Wert fuer \noexpand\citationstyle: \citationstyle}{Bitte setzen Sie \noexpand\citationstyle auf ieee, fom_2018 oder fom_alt.}
         }
     }
 }
@@ -419,6 +430,13 @@
 %-----------------------------------
 \printnoidxglossaries
 \newpage
+
+%-----------------------------------
+% KI-Verzeichnis (optional)
+%-----------------------------------
+% Verzeichnis der eingesetzten KI-Werkzeuge (siehe FOM-Leitfaden). Zum Aktivieren
+% die folgende Zeile entkommentieren. Wurde keine KI genutzt, bleibt sie inaktiv.
+%\input{kapitel/anhang/ki_verzeichnis}
 
 %-----------------------------------
 % Sperrvermerk

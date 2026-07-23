@@ -1,15 +1,15 @@
 IF "%1" == "en" (
-    lualatex --jobname=thesis_englisch  "\def\FOMEN{}\input{thesis_main.tex}"
-    biber thesis_englisch
-    lualatex --jobname=thesis_englisch  "\def\FOMEN{}\input{thesis_main.tex}"
-    lualatex --jobname=thesis_englisch  "\def\FOMEN{}\input{thesis_main.tex}"
-    thesis_englisch.pdf
+    lualatex --jobname=main_englisch  "\def\FOMEN{}\input{main.tex}"
+    biber main_englisch
+    lualatex --jobname=main_englisch  "\def\FOMEN{}\input{main.tex}"
+    lualatex --jobname=main_englisch  "\def\FOMEN{}\input{main.tex}"
+    main_englisch.pdf
 ) ELSE (
-    lualatex thesis_main.tex
-    biber thesis_main
-    lualatex thesis_main.tex
-    lualatex thesis_main.tex
-    thesis_main.pdf
+    lualatex main.tex
+    biber main
+    lualatex main.tex
+    lualatex main.tex
+    main.pdf
 )
 del *.bbl /f /q
 del *.blg /f /q

@@ -1,5 +1,7 @@
 .DS_Store
 
+old/
+
 # Diese Dateien werden beim kompilieren erzeugt:
 *.aux
 *.bbl
@@ -24,7 +26,14 @@
 
 # IDEs
 .texpadtmp/
-thesis_main.pdf
-thesis_englisch.pdf
+main.pdf
+main_englisch.pdf
 
-_markdown_thesis_main/
+_markdown_main/
+
+# Literatur-Volltexte (Urheberrecht, grosse Dateien) - werden nicht eingecheckt
+literatur/pdf/
+
+# Recherche-Zwischendateien in docs/ (z. B. EBSCO-Dumps)
+docs/_*.json
+docs/_*.txt
