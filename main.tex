@@ -296,6 +296,11 @@
 \input{abkuerzungen/glossar}
 
 %-----------------------------------
+% Automatisches Ausblenden leerer Verzeichnisse (\iffiguresexist etc.)
+%-----------------------------------
+\input{skripte/leereVerzeichnisse}
+
+%-----------------------------------
 % PDF Meta Daten setzen
 %-----------------------------------
 \usepackage[hyperfootnotes=false]{hyperref} %hyperfootnotes=false deaktiviert die Verlinkung der Fußnote. Ansonsten inkompaibel zum Paket "footmisc"
@@ -395,41 +400,60 @@
 \tableofcontents
 \newpage
 
+% HINWEIS: Die folgenden Verzeichnisse (Abbildungen, Tabellen, Abkürzungen,
+% Symbole, Glossar) werden automatisch ausgeblendet, wenn sie leer wären -
+% inklusive Überschrift, Inhaltsverzeichnis-Eintrag und Seitenumbruch. Die
+% Logik dazu steckt in skripte/leereVerzeichnisse.tex (\iffiguresexist,
+% \iftablesexist, \ifacronymsused, \ifsymbolsexist, \ifglossaryused).
+% Es muss also nichts mehr von Hand auskommentiert werden.
+
 %-----------------------------------
 % Abbildungsverzeichnis
 %-----------------------------------
-\listoffigures
-\newpage
+\iffiguresexist{%
+  \listoffigures
+  \newpage
+}{}
 %-----------------------------------
 % Tabellenverzeichnis
 %-----------------------------------
-\listoftables
-\newpage
+\iftablesexist{%
+  \listoftables
+  \newpage
+}{}
 %-----------------------------------
 % Abkürzungsverzeichnis
 %-----------------------------------
-% Falls das Abkürzungsverzeichnis nicht im Inhaltsverzeichnis angezeigt werden soll
-% dann folgende Zeile auskommentieren.
-\addcontentsline{toc}{section}{\abbreHeadingName}
+% Das acronym-Environment wird immer geladen (Definitionen für \ac{...} im Text).
+% Überschrift, TOC-Eintrag und \newpage nur, wenn mindestens eine Abkürzung
+% tatsächlich verwendet wurde.
+\ifacronymsused{%
+  \addcontentsline{toc}{section}{\abbreHeadingName}%
+  \section*{\abbreHeadingName}%
+}{}
 \input{abkuerzungen/acronyms}
-\newpage
+\ifacronymsused{\newpage}{}
 
 %-----------------------------------
 % Symbolverzeichnis
 %-----------------------------------
-% In Overleaf führt der Einsatz des Symbolverzeichnisses zu einem Fehler, der aber ignoriert werdne kann
-% Falls das Symbolverzeichnis nicht im Inhaltsverzeichnis angezeigt werden soll
-% dann folgende Zeile auskommentieren.
-\phantomsection\addcontentsline{toc}{section}{\symheadingname}
+% In Overleaf führt der Einsatz des Symbolverzeichnisses zu einem Fehler, der aber ignoriert werden kann.
+% \input{symbolDef} wird immer geladen (Symbol-Definitionen). Anzeige nur, wenn
+% mindestens ein Symbol definiert wurde.
 \input{skripte/symbolDef}
-\listofsymbols
-\newpage
+\ifsymbolsexist{%
+  \phantomsection\addcontentsline{toc}{section}{\symheadingname}%
+  \listofsymbols
+  \newpage
+}{}
 
 %-----------------------------------
 % Glossar
 %-----------------------------------
+% \printnoidxglossaries druckt von sich aus nichts, wenn kein Begriff verwendet
+% wurde. Der \newpage entfällt dann, damit keine leere Seite entsteht.
 \printnoidxglossaries
-\newpage
+\ifglossaryused{\newpage}{}
 
 %-----------------------------------
 % KI-Verzeichnis (optional)

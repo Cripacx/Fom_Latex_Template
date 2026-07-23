@@ -61,8 +61,9 @@ itself.
   confidentiality notice).
 - **`skripte/`** (other files) — formatting machinery: `weitereEbene.tex`
   (enables `\paragraph` as a numbered 4th heading level), `textcommands.tex`,
-  `symbolDef.tex`, `modsBiblatex2018.tex` / `modsBiblatex.tex` (citation-style
-  tweaks loaded conditionally — see below).
+  `symbolDef.tex`, `leereVerzeichnisse.tex` (auto-hides empty front-matter
+  directories — see below), `modsBiblatex2018.tex` / `modsBiblatex.tex`
+  (citation-style tweaks loaded conditionally — see below).
 - **`abkuerzungen/`** — `acronyms.tex` (the `acronym` list; only `[printonlyused]`
   acronyms appear) and `glossar.tex` (`glossaries` entries).
 - **`literatur/literatur.bib`** — the BibLaTeX database. `literatur/pdf/` (source
@@ -99,6 +100,21 @@ with `\langde{...}` and `\langen{...}` — only the active language renders.
 Valid values: `fom_2018` (default, current FOM Leitfaden — `ext-authoryear-ibid`,
 footnote citations), `ieee`, or `fom_alt`. Each branch loads a different
 `biblatex` config and the matching `skripte/modsBiblatex*.tex`.
+
+### Empty front-matter directories are auto-hidden
+
+`skripte/leereVerzeichnisse.tex` automatically suppresses the list of figures,
+list of tables, list of abbreviations, list of symbols, and the glossary —
+including their heading, TOC entry, and `\newpage` — when they would be empty. No
+manual commenting is needed. Definitions (`\input{symbolDef}`, the acronym
+environment, glossary entries) always load so `\ac{...}`, symbols, and `\gls{...}`
+keep working in the body; only the *presentation* is gated. Detection is
+per-directory: figures/tables via persisted `figure`/`table` counts
+(`\iffiguresexist`/`\iftablesexist`), symbols via a scan of `.sym`
+(`\ifsymbolsexist`), abbreviations via an `\acronymused` flag (`\ifacronymsused`),
+and the glossary via `\forglsentries`/`\ifglsused` (`\ifglossaryused`). Because the
+signals come from the previous run, the multi-pass build (lualatex ×3) converges
+on its own.
 
 ## Conventions
 

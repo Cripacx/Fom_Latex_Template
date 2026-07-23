@@ -1,0 +1,90 @@
+%-----------------------------------
+% Automatisches Ausblenden leerer Verzeichnisse
+%-----------------------------------
+% Blendet Verzeichnisse (samt Ueberschrift, TOC-Eintrag und \newpage)
+% automatisch aus, wenn sie leer waeren. Zur Nutzung im Dokument stehen bereit:
+%
+%   \iffiguresexist{<dann>}{<sonst>}  - Abbildungsverzeichnis
+%   \iftablesexist{<dann>}{<sonst>}   - Tabellenverzeichnis
+%   \ifacronymsused{<dann>}{<sonst>}  - Abkuerzungsverzeichnis
+%   \ifsymbolsexist{<dann>}{<sonst>}  - Symbolverzeichnis
+%   \ifglossaryused{<dann>}{<sonst>}  - Glossar
+%
+% Die Angaben stammen aus dem jeweils vorherigen Lauf (bzw. werden am
+% Dokumentende in die .aux persistiert). Da die Vorlage ohnehin mehrfach
+% kompiliert (lualatex -> biber -> lualatex -> lualatex), konvergiert die
+% Anzeige zuverlaessig. Auf einer voellig frischen Datei gilt ein Verzeichnis
+% zunaechst als leer und erscheint erst im naechsten Durchlauf.
+%
+% Warum nicht einfach die .aux-Datei lesen? LaTeX schreibt die .aux waehrend des
+% Laufs neu; im Frontmatter stehen die erst im Textteil erzeugten Marker
+% (z. B. \acronymused, \@gls@reference) noch nicht auf der Platte. Deshalb werden
+% Zaehler bzw. im Speicher gehaltene Flags verwendet, nicht das Dateiscannen.
+
+\makeatletter
+
+%----- Abbildungs- und Tabellenverzeichnis (Zaehler-Persistierung) -----
+% Die .lof/.lot-Schreibdatei wird erst von \listoffigures/\listoftables selbst
+% geoeffnet; wuerde man diese ausblenden, entstuende die Datei nie. Daher wird
+% die finale Anzahl ueber die Zaehler figure/table am Dokumentende gesichert.
+\providecommand\Total@figures{0}
+\providecommand\Total@tables{0}
+\AtEndDocument{%
+  \immediate\write\@auxout{\string\gdef\string\Total@figures{\the\value{figure}}}%
+  \immediate\write\@auxout{\string\gdef\string\Total@tables{\the\value{table}}}%
+}
+\newcommand{\iffiguresexist}[2]{\ifnum\Total@figures>0\relax#1\else#2\fi}
+\newcommand{\iftablesexist}[2]{\ifnum\Total@tables>0\relax#1\else#2\fi}
+
+%----- Glossar (oeffentliche glossaries-API) -----
+% Am Dokumentende die Anzahl der tatsaechlich verwendeten Glossareintraege
+% zaehlen und in die .aux schreiben. \printnoidxglossaries druckt von sich aus
+% nichts, wenn kein Begriff verwendet wurde; hier wird nur der \newpage
+% konditioniert, damit keine leere Seite entsteht.
+\providecommand\Total@glsused{0}
+\newcounter{ltd@glscount}
+\AtEndDocument{%
+  \setcounter{ltd@glscount}{0}%
+  \forglsentries{\ltd@glsentry}{%
+    \ifglsused{\ltd@glsentry}{\stepcounter{ltd@glscount}}{}%
+  }%
+  \immediate\write\@auxout{\string\gdef\string\Total@glsused{\the\value{ltd@glscount}}}%
+}
+\newcommand{\ifglossaryused}[2]{\ifnum\Total@glsused>0\relax#1\else#2\fi}
+
+%----- Abkuerzungsverzeichnis (Flag ueber \acronymused) -----
+% \acronymused{<label>} wird vom acronym-Paket in die .aux geschrieben und beim
+% naechsten \begin{document} ausgefuehrt. Der Wrapper setzt dabei ein globales
+% Flag. So ist im Frontmatter (nach \begin{document}) bekannt, ob im vorherigen
+% Lauf mindestens eine Abkuerzung verwendet wurde.
+\newif\if@acronymsused
+\@ifundefined{acronymused}{}{%
+  \let\ltd@orig@acronymused\acronymused
+  \renewcommand\acronymused[1]{\global\@acronymsusedtrue\ltd@orig@acronymused{#1}}%
+}
+\newcommand{\ifacronymsused}[2]{\if@acronymsused#1\else#2\fi}
+
+%----- Symbolverzeichnis (Datei-Scan der .sym) -----
+% skripte/symbolDef.tex schreibt die .sym VOR der Pruefung vollstaendig; daher
+% ist ein Scan der Datei hier zuverlaessig. Marker: "printsymline".
+\newread\ltd@read
+\newif\if@symbolsfound
+\newcommand{\ifsymbolsexist}[2]{%
+  \@symbolsfoundfalse
+  \IfFileExists{\jobname.sym}{%
+    \openin\ltd@read=\jobname.sym\relax
+    \begingroup
+      \edef\ltd@mark{\detokenize{printsymline}}%
+      \loop\unless\ifeof\ltd@read
+        \readline\ltd@read to \ltd@line
+        \edef\ltd@test{\noexpand\in@{\ltd@mark}{\ltd@line}}%
+        \ltd@test
+        \ifin@\global\@symbolsfoundtrue\fi
+      \repeat
+    \endgroup
+    \closein\ltd@read
+  }{}%
+  \if@symbolsfound#1\else#2\fi
+}
+
+\makeatother
